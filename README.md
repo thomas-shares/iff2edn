@@ -1,14 +1,15 @@
 # iff2edn
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to convert IFF (International File Format, yes that is an incredible shit name) into EDN.
+It will also combine the time table with the footnotes to create a proper time table with all the journeys in it.
 
 ## Usage
 
-FIXME
+At the moment very WIP. mostly just a bunch of functions you can call from the REPL.
 
 ## License
 
-Copyright © 2025 FIXME
+Copyright © 2025 Thomas van der Veen
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
