@@ -63,3 +63,11 @@
   [journeys footnotes]
   (mapcat #(expand-journey-for-dates % footnotes) journeys))
 
+(comment
+  
+(expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn)
+
+
+
+  )
+

@@ -261,4 +261,10 @@
 
 (comment
  (take 5 (process-file "./resources/timetbls_new.dat" 100)) 
+  
+
+  (def tm (process-file "./resources/timetbls_new.dat" 100))
+  ;;(expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/fn)
+
  )
+
