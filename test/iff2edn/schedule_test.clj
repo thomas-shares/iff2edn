@@ -189,3 +189,26 @@
             :service-date (jt/local-date "2024-01-17")}]))))
 
 ;;(clojure.pprint/pprint (expand-journey-for-dates sample-journey sample-footnotes))
+
+(deftest convert-journey-test
+  (testing "Converting journey to expected format"
+  (is (= (convert-journey {:service-id 1 
+                           :journey-id 3562 
+                           :service-date (jt/local-date "2024-01-17")
+                           :stops [{:station :vl,
+                                    :arrival-time nil,
+                                    :departure-time
+                                    (jt/local-date-time  "2024-01-17T16:33"),
+                                    :arrival-platform "3",
+                                    :departure-platform "3",
+                                    :stop-type :start,
+                                    :arrival-data-time nil}
+                                   {:station :ddr,
+                                    :arrival-time "2730",
+                                    :departure-time nil,
+                                    :arrival-platform "2",
+                                    :departure-platform "2",
+                                    :stop-type :final,
+                                    :arrival-data-time
+                                    (jt/local-date-time  "2024-01-18T03:30")}]})
+         {}))))

@@ -8,5 +8,5 @@
                  [hato "1.0.0"]]
     :plugins [[lein-ancient "0.6.15"]
               [lein-auto "0.1.3"]]
-  :jvm-opts ["-Xmx2g"]
+  :jvm-opts ["-Xmx8g"]
   :repl-options {:init-ns iff2edn.core})

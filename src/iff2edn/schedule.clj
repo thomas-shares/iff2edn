@@ -1,6 +1,9 @@
 (ns iff2edn.schedule
   (:require [iff2edn.util :as util]
-            [java-time :as jt]))
+            [java-time :as jt]
+            [clojure.string :as str]
+            [clojure.pprint :refer [pprint]])
+  (:import [java.time Instant]))
 
 (defn parse-time
   "Parse IFF time format (HHMM) to minutes since midnight.
@@ -10,6 +13,7 @@
     (let [hours (Integer/parseInt (subs time-str 0 2))
           minutes (Integer/parseInt (subs time-str 2 4))]
       (+ (* hours 60) minutes))))
+
 (defn minutes-to-time-and-date-offset
   "Convert minutes since midnight to [time-str date-offset].
    date-offset is 0 for same day, 1 for next day, etc."
@@ -42,8 +46,8 @@
                               (util/join-date-time departure-date (util/parse-time-string departure-time)))]
 
     (assoc stop
-           :arrival-data-time arrival-date-time
-           :departure-time departure-date-time)))
+           :arrival-date-time arrival-date-time
+           :departure-date-time departure-date-time)))
 
 (defn expand-journey-for-dates
   "Expand a single journey for all valid dates from its footnote."
@@ -63,11 +67,80 @@
   [journeys footnotes]
   (mapcat #(expand-journey-for-dates % footnotes) journeys))
 
+(defn date->instant [date]
+  (when (not (nil? date))
+    (let [zone-id    (java.time.ZoneId/of "UTC")      ; or "UTC"
+          zdt        (.atStartOfDay date zone-id)
+          instant    (.toInstant zdt)]
+      instant)))
+
+(defn date-time->instant [date-time]
+  (println "date-time->instant:   " date-time)
+  (if (not (nil? date-time))
+    (let [zone-id    (java.time.ZoneId/of "UTC")      ; or "UTC"
+          _ (println "zone-id: " zone-id   " date-time: " date-time)
+          zdt        (.atZone date-time zone-id)
+          instant    (.toInstant zdt)]
+       instant)
+    nil))
+
+(if (not (nil?  5))
+  "t"
+  "f")
+
+
+(def m {:station :rtd
+ :arrival-time nil
+ :actual-arrival-time nil
+ :platform "3a"
+ :departure-time (jt/local-date-time "2025-08-06T23:35")
+ :actual-departure-time (jt/local-date-time "2025-08-06T23:35")
+ :expected-passenger-count 123})
+
+(update m :departure-time date-time->instant)
+
+
+
+(defn convert-journey [journey]
+  (let  [journey-id (:journey-id journey)
+         date (date->instant (:service-date journey))
+         id (str (str/replace (:service-date journey) #"-" "") journey-id)
+         stops (->> (:stops journey)
+                    (map #(assoc % :platform (:arrival-platform %) :actual-arrival-time nil :actual-departure-time nil))
+                    (map #(update % :departure-time date-time->instant))
+                    (map #(update % :arrival-time date-time->instant))
+                    (map #(dissoc % :arrival-data-time :departure-platform :arrival-platform :stop-type))
+                    (println "stops!!!: " )
+                    )
+         all (select-keys journey [:type :journey-id ])]
+    #_(pprint stops)
+    (assoc all :id id :date date :stops stops)))
+
 (comment
   
 (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn)
 
 
+  (def j {:service-id 1
+          :journey-id 3562
+          :service-date (jt/local-date "2024-01-17")
+          :stops [{:station :vl,
+                   :arrival-time nil,
+                   :departure-time
+                   (jt/local-date-time  "2024-01-17T16:33"),
+                   :arrival-platform "3",
+                   :departure-platform "3",
+                   :stop-type :start,
+                   :arrival-data-time nil}
+                  {:station :ddr,
+                   :arrival-time "2730",
+                   :departure-time nil,
+                   :arrival-platform "2",
+                   :departure-platform "2",
+                   :stop-type :final,
+                   :arrival-data-time
+                   (jt/local-date-time  "2024-01-18T03:30")}]})
+(convert-journey j)
 
   )
 

@@ -19,7 +19,10 @@
 
 (defn join-date-time [date time]
   "Join a date and time string into a LocalDateTime object."
-  (jt/local-date-time date time))
+  (let [date-time (jt/local-date-time date time)
+        zone-id (jt/zone-id "UTC")
+        soone date-time zone-id) 
+         ))
   
 
 (defn read-lines-to-vector [filename]
