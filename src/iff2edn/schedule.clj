@@ -118,7 +118,7 @@
 
 (comment
   
-(expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn)
+(util/pretty-spit "pretty-all.edn"(expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))
 
 
   (def j {:service-id 1
@@ -140,7 +140,7 @@
                    :stop-type :final,
                    :arrival-data-time
                    (jt/local-date-time  "2024-01-18T03:30")}]})
-(convert-journey j)
+(pprint (convert-journey j))
 
   )
 

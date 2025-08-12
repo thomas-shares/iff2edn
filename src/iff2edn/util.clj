@@ -21,8 +21,8 @@
   "Join a date and time string into a LocalDateTime object."
   (let [date-time (jt/local-date-time date time)
         zone-id (jt/zone-id "UTC")
-        soone date-time zone-id) 
-         ))
+        zooned (jt/instant date-time zone-id)] 
+         zooned))
   
 
 (defn read-lines-to-vector [filename]

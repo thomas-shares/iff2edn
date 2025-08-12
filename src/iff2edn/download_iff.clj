@@ -39,4 +39,4 @@
     (unzip file-path (str "./resources/"))))
 
 
-;;(get-latest-iff)
+(get-latest-iff)
