@@ -14,3 +14,4 @@ pom.xml.asc
 .calva/
 /resources/*.dat
 /*.edn
+/resources/*.zip
