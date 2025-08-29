@@ -27,8 +27,8 @@
 
 (comment
  (def footn (convert-footnotes (util/read-lines-to-vector "./resources/footnote.dat") 
-                 (jt/local-date "2025-07-28") ))
-  (sort (map count (vals fn)))
-  (count (get fn "00000" ))
+                 (jt/local-date "2025-08-25") ))
+  (sort (map count (vals footn)))
+  (count (get footn "00000" ))
 )
 

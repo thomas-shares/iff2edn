@@ -135,10 +135,14 @@
 
 (comment
   
-(util/pretty-spit "pretty-all.edn"(expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))
+;;(spit "pretty-all.edn" (prn-str (pmap #(convert-journey %) (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))))
 
   
-  (first (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))
+(map-indexed  (fn [idx e] (spit (str "j/journey-" idx ".edn" ) e))
+              (pmap #(convert-journey %) 
+                    (expand-all-journeys 
+                     iff2edn.time-table/tm 
+                     iff2edn.footnote/footn)))
 
   
 

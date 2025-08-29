@@ -15,3 +15,4 @@ pom.xml.asc
 /resources/*.dat
 /*.edn
 /resources/*.zip
+/j/*.edn
