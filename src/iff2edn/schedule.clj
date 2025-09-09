@@ -133,12 +133,15 @@
            :current-location nil
            :previous-locations [])))
 
+(defmethod print-method Instant [inst ^java.io.Writer w]
+  (.write w (str "#inst/instant \"" (.toString inst) "\"")))
+
 (comment
   
-;;(spit "pretty-all.edn" (prn-str (pmap #(convert-journey %) (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))))
+;;(spit "/home/thomas/pretty-all.edn" (prn-str (pmap #(convert-journey %) (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))))
 
   
-(map-indexed  (fn [idx e] (spit (str "j/journey-" idx ".edn" ) e))
+(map-indexed  (fn [idx e] (spit (str "/home/thomas/tmp/journeys/journey-" idx ".edn" ) (prn-str e)))
               (pmap #(convert-journey %) 
                     (expand-all-journeys 
                      iff2edn.time-table/tm 
@@ -146,7 +149,7 @@
 
   
 
-(def journey-1
+#_(def journey-1
   {:service-id 1, 
    :journey-id 4025, 
    :footnote "00001", 
