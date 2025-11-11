@@ -1,8 +1,17 @@
 (ns iff2edn.util
   (:require [java-time :as jt]
             [clojure.pprint :as pp]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import [java.time Instant LocalDate LocalTime]))
 
+(defmethod print-method Instant [inst ^java.io.Writer w]
+  (.write w (str "#inst/instant \"" (.toString inst) "\"")))
+
+(defmethod print-method LocalDate [date ^java.io.Writer w]
+  (.write w (str "#inst/date \"" (jt/format (jt/formatter "yyyy-MM-dd") date) "\"")))
+
+(defmethod print-method LocalTime [time ^java.io.Writer w]
+  (.write w (str "#inst/time \"" (jt/format (jt/formatter "HH:mm:ss") time) "\"")))
 
 (defn parse-date-string [date-str]
   "Parse a date string in format 'ddMMyyyy' to an Instant object"
@@ -21,8 +30,8 @@
   "Join a date and time string into a LocalDateTime object."
   (let [date-time (jt/local-date-time date time)
         zone-id (jt/zone-id "UTC")
-        zooned (jt/instant date-time zone-id)] 
-         zooned))
+        zoned (jt/instant date-time zone-id)] 
+         zoned))
   
 
 (defn read-lines-to-vector [filename]

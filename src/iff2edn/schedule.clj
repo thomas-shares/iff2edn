@@ -103,7 +103,8 @@
 
 (defn convert-journey [journey]
   (let  [journey-id (:journey-id journey)
-         date (date->instant (:service-date journey))
+         ;;date (date->instant (:service-date journey))
+         date (:service-date journey)
          id (str (str/replace (:service-date journey) #"-" "") journey-id)
          type (:type journey)
          stops (->> (:stops journey)
@@ -133,7 +134,7 @@
            :current-location nil
            :previous-locations [])))
 
-(defmethod print-method Instant [inst ^java.io.Writer w]
+#_(defmethod print-method Instant [inst ^java.io.Writer w]
   (.write w (str "#inst/instant \"" (.toString inst) "\"")))
 
 (comment
