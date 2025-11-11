@@ -30,24 +30,27 @@
   [stop service-date]
   (let [arrival-minutes (parse-time (:arrival-time stop))
         departure-minutes (parse-time (:departure-time stop))
+        _ (println "H: " arrival-minutes departure-minutes)
 
         [arrival-time arrival-offset] (when arrival-minutes
                                         (minutes-to-time-and-date-offset arrival-minutes))
         [departure-time departure-offset] (when departure-minutes
                                             (minutes-to-time-and-date-offset departure-minutes))
 
-        arrival-date (when arrival-offset
-                       (jt/plus service-date (jt/days arrival-offset)))
-        departure-date (when departure-offset
-                         (jt/plus service-date (jt/days departure-offset)))
-        arrival-date-time (when (and arrival-date arrival-time)
-                            (util/join-date-time arrival-date (util/parse-time-string arrival-time)))
-        departure-date-time (when (and departure-date departure-time)
-                              (util/join-date-time departure-date (util/parse-time-string departure-time)))]
+        ;;arrival-date (when arrival-offset
+        ;;               (jt/plus service-date (jt/days arrival-offset)))
+        ;;departure-date (when departure-offset
+        ;;                 (jt/plus service-date (jt/days departure-offset)))
+        
+        arrival-time (when arrival-time
+                            (util/parse-time-string arrival-time))
+        departure-time (when departure-time
+                              (util/parse-time-string departure-time))]
+    (println "actual: " arrival-time departure-time)
 
     (assoc stop
-           :arrival-date-time arrival-date-time
-           :departure-date-time departure-date-time)))
+           :arrival-time arrival-time
+           :departure-time departure-time)))
 
 (defn expand-journey-for-dates
   "Expand a single journey for all valid dates from its footnote."
@@ -142,11 +145,11 @@
 ;;(spit "/home/thomas/pretty-all.edn" (prn-str (pmap #(convert-journey %) (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))))
 
   
-(map-indexed  (fn [idx e] (spit (str "/home/thomas/tmp/journeys/journey-" idx ".edn" ) (prn-str e)))
+(take 5 (map-indexed  (fn [idx e] (util/pretty-spit (str "/home/thomas/tmp/journey-" idx ".edn" ) (prn-str e)))
               (pmap #(convert-journey %) 
                     (expand-all-journeys 
                      iff2edn.time-table/tm 
-                     iff2edn.footnote/footn)))
+                     iff2edn.footnote/footn))))
 
   
 

@@ -14,13 +14,13 @@
   (.write w (str "#inst/time \"" (jt/format (jt/formatter "HH:mm:ss") time) "\"")))
 
 (defn parse-date-string [date-str]
-  "Parse a date string in format 'ddMMyyyy' to an Instant object"
+  "Parse a date string in format 'ddMMyyyy' to an Date object"
   (let [formatter (jt/formatter "ddMMyyyy")]
     (jt/local-date formatter date-str)))
 
 
 (defn parse-time-string [time-str]
-  "Parse a time string in format 'hhmm' to an Instant object"
+  "Parse a time string in format 'hhmm' to an Time object"
   (when time-str
     (let [hours (Integer/parseInt (subs time-str 0 2))
           minutes (Integer/parseInt (subs time-str 2 4))]
