@@ -115,11 +115,12 @@
                                  :actual-arrival-time nil
                                  :actual-departure-time nil
                                  :expected-passenger-count 0
-                         :arrival-time (:arrival-date-time %)
-                         :departure-time (:departure-date-time %)))
+                         ;;:arrival-time (:arrival-time %)
+                         ;;:departure-time (:departure-time %)
+                                 ))
                     #_(map #(update % :departure-time date-time->instant))
                     #_(map #(update % :arrival-time date-time->instant))
-                    (map #(dissoc % :arrival-date-time :departure-platform :arrival-platform :departure-date-time)))
+                    (map #(dissoc % :departure-platform :arrival-platform)))
          all (select-keys journey [:type :journey-id ])]
     #_(println "hier: " stops)
     (assoc all 
@@ -145,11 +146,11 @@
 ;;(spit "/home/thomas/pretty-all.edn" (prn-str (pmap #(convert-journey %) (expand-all-journeys iff2edn.time-table/tm iff2edn.footnote/footn))))
 
   
-(take 5 (map-indexed  (fn [idx e] (util/pretty-spit (str "/home/thomas/tmp/journey-" idx ".edn" ) (prn-str e)))
+(map-indexed  (fn [idx e] (util/pretty-spit (str "/home/thomas/tmp/journey-" idx ".edn" ) (prn-str e)))
               (pmap #(convert-journey %) 
                     (expand-all-journeys 
                      iff2edn.time-table/tm 
-                     iff2edn.footnote/footn))))
+                     iff2edn.footnote/footn)))
 
   
 
